@@ -11,8 +11,8 @@ public class Food {
         gen = new Random();
         int tempX = gen.nextInt((int)(Grid.GRID_WIDTH / Grid.CELL_SIZE)) * Grid.CELL_SIZE;
         int tempY = gen.nextInt((int)(Grid.GRID_HEIGHT / Grid.CELL_SIZE)) * Grid.CELL_SIZE;
-        setX(tempX);
-        setY(tempY);
+        setX(520);
+        setY(0);
     }
 
     public int getX() {

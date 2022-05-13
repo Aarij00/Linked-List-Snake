@@ -1,12 +1,41 @@
 import java.lang.Math;
+import java.util.ArrayList;
+
+class Tuple<X, Y> {
+    private X x;
+    private Y y;
+    public Tuple(X x, Y y) { 
+        this.x = x; 
+        this.y = y; 
+    }
+
+    public X getFirst() {
+        return this.x;
+    }
+
+    public Y getSecond() {
+        return this.y;
+    }
+
+    public void setFirst(X x) {
+        this.x = x;
+    }
+    public void setSecond(Y y) {
+        this.y = y;
+    }
+}
 
 class Node {
-    int data;
+    Tuple<Integer, Integer> data;
     Node next;
 
-    public Node(int newData) {
-        data = newData;
-        next = null;
+    public Node(Tuple<Integer, Integer> newData) {
+        this.data = newData;
+        this.next = null;
+    }
+
+    public boolean equals(Node other) {
+        return this.data.getFirst() == other.data.getFirst() && this.data.getSecond() == other.data.getSecond();
     }
 }
 
@@ -18,17 +47,19 @@ public class Snake {
     
 
     public Snake() {
-        int startingPoint = (int) (Math.pow((Grid.GRID_WIDTH / Grid.CELL_SIZE), 2) / 2);
+        // (Grid.GRID_WIDTH / Grid.CELL_SIZE) / 2, (Grid.GRID_HEIGHT / Grid.CELL_SIZE) / 2)
+        Tuple<Integer, Integer> startingPoint = new Tuple<>(0, 0);
         head = new Node(startingPoint);
 
-        direction = 'R';
+        direction = 0;
         numOfParts = 1;
     }
 
-    public void insertAtStart(int data) {
+    public void insertAtStart(Tuple<Integer, Integer> data) {
         Node node = new Node(data);
-        node.next = head;
-        head = node;
+        Node temp = this.head;
+        node.next = temp;
+        this.head = node;
 
         numOfParts++;
     }
@@ -43,7 +74,7 @@ public class Snake {
         numOfParts--;
     }
 
-    public void insertAtEnd(int d) {
+    public void insertAtEnd(Tuple<Integer, Integer> d) {
         Node node = new Node(d);
         Node n = head;
         while (n.next != null) {
@@ -64,6 +95,40 @@ public class Snake {
         return coordinates;
     }
 
+    public Node getTail() {
+        Node n = head;
+        while (n.next != null) {
+            n = n.next;
+        }
+        return n;
+    }
+
+    public ArrayList<Node> getBody() {
+        ArrayList<Node> arr = new ArrayList<>();
+        Node h = this.head;
+        while (h.next != null) {
+            arr.add(h);
+            h = h.next;
+        }
+        // adding last element
+        arr.add(h);
+        // removing head from array
+        arr.remove(0);
+        return arr;
+    }
+
+    public ArrayList<Node> getBodyWithHead() {
+        ArrayList<Node> arr = new ArrayList<>();
+        Node h = this.head;
+        while (h.next != null) {
+            arr.add(h);
+            h = h.next;
+        }
+        // adding last element
+        arr.add(h);
+        return arr;
+    }
+
     public Node getHead() {
         return this.head;
     }
@@ -82,6 +147,21 @@ public class Snake {
 
     public void setNumOfParts(int numOfParts) {
         this.numOfParts = numOfParts;
+    }
+
+    public void printSnake() {
+        Node h = this.head;
+        while (h.next != null) {
+            Tuple<Integer, Integer> c = h.data;
+            int x = c.getFirst();
+            int y = c.getSecond();
+            System.out.print(x + "," + y + " -> ");
+            h = h.next;
+        }
+        Tuple<Integer, Integer> c = h.data;
+        int x = c.getFirst();
+        int y = c.getSecond();
+        System.out.println(x + "," + y);
     }
 
 }
