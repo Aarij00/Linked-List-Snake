@@ -164,4 +164,39 @@ public class Snake {
         System.out.println(x + "," + y);
     }
 
+    public void reverse(Node h) {
+        if (h == null || h.next == null) {
+            this.head = h;
+            return;
+        }
+        Node current = h;
+        Node nextToCurr = h.next;
+        h.next = null;
+        while (nextToCurr != null) {
+            Node temp = nextToCurr.next;
+            nextToCurr.next = current;
+            current = nextToCurr;
+            nextToCurr = temp;
+        }
+        this.head = current;
+        switch (this.direction) {
+            case 'L':
+                this.setDirection('R');
+                break;
+            case 'R':
+                this.setDirection('L');
+                break;
+            case 'U':
+                this.setDirection('D');
+                break;
+            case 'D':
+                this.setDirection('U');
+                break;
+        
+            default:
+                break;
+        }
+ 
+     }
+
 }

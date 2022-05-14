@@ -5,24 +5,32 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Grid extends JPanel implements ActionListener{
+
+    // Colors
+    public static Color NAVY_BLUE = new Color(10, 25, 46);
+    public static Color CYAN = new Color(101, 255, 220);
+    public static Color DARK_RED = new Color(100, 25, 46);
+    public static Color GREEN = new Color(125, 200, 46);
+    public static Color SLATE_GRAY = new Color(136, 146, 175);
+    public static Color DULL_PINK = new Color(200, 178, 208);
+    
     
     public static final int GRID_WIDTH = 600;
     public static final int GRID_HEIGHT = 600;
     public static final int CELL_SIZE = 40;
-    public static final int DELAY = 150;
+    public static final int DELAY = 140;
     public static boolean clickedReset;
     public static int score;
     public static int highScore;
-    public static boolean repaintCanvas = true;
+    public static boolean repaintCanvas;
+    public static boolean running;
+    public static boolean toggleGridLines;
+    public boolean justReversed;
     
     private Random gen;
     private Food apple;
     private Snake snake;
-    public static boolean running;
-    public static boolean toggleGridLines;
     private Timer timer;
-    
-    public static boolean DEBUG = true;
 
     Action upAction;
     Action downAction;
@@ -34,9 +42,9 @@ public class Grid extends JPanel implements ActionListener{
 
         this.setLocation(0, 100);
         this.setPreferredSize(new Dimension(600, 600));
-        this.setBackground(new Color(10, 25, 46));
+        this.setBackground(NAVY_BLUE);
         this.setFocusable(true);
-        this.setBorder(BorderFactory.createLineBorder(new Color(101, 255, 220), 2, true));
+        this.setBorder(BorderFactory.createLineBorder(CYAN, 2, true));
 
         upAction = new UpAction();
         downAction = new DownAction();
@@ -62,11 +70,13 @@ public class Grid extends JPanel implements ActionListener{
         clickedReset = false;
         score = 0;
         highScore = score;
+        repaintCanvas = true;
         gen = new Random();
         createApple();
         createSnake();
         running = true;
         toggleGridLines = true;
+        justReversed = false;
         timer = new Timer(DELAY,this);
 		timer.start();
     }
@@ -89,8 +99,16 @@ public class Grid extends JPanel implements ActionListener{
         
     }
 
+    public Color chooseFoodType() {
+        int num = gen.nextInt(2);
+        if (num == 0) {
+            return DARK_RED;
+        }
+        return GREEN;
+    }
+
     public void createApple() {
-        apple = new Food();
+        apple = new Food(chooseFoodType());
         int tempX = gen.nextInt((int)(GRID_WIDTH / CELL_SIZE)) * CELL_SIZE;
         int tempY = gen.nextInt((int)(GRID_HEIGHT / CELL_SIZE)) * CELL_SIZE;
         apple.setX(tempX);
@@ -105,7 +123,7 @@ public class Grid extends JPanel implements ActionListener{
 
     public void draw(Graphics g) {
         if (toggleGridLines) {
-            g.setColor(new Color(101, 255, 220));
+            g.setColor(CYAN);
             for (int i = 0; i < GRID_HEIGHT / CELL_SIZE; i++) {
                 g.drawLine(i*CELL_SIZE, 0, i*CELL_SIZE, GRID_HEIGHT);
                 g.drawLine(0, i*CELL_SIZE, GRID_WIDTH, i*CELL_SIZE);
@@ -113,7 +131,7 @@ public class Grid extends JPanel implements ActionListener{
         }
 
         // drawing food
-        g.setColor(new Color(100, 25, 46));
+        g.setColor(apple.getColor());
         g.fillOval(apple.getX(), apple.getY(), CELL_SIZE, CELL_SIZE);
         
 
@@ -129,11 +147,11 @@ public class Grid extends JPanel implements ActionListener{
             }
             
             if (n == snake.getHead()) {
-                g.setColor(new Color(136, 146, 175));
+                g.setColor(SLATE_GRAY);
                 g.fillRoundRect(x, y, Grid.CELL_SIZE, Grid.CELL_SIZE, 15, 15);
             } 
             else {
-                g.setColor(new Color(200, 178, 208));
+                g.setColor(DULL_PINK);
                 g.fill3DRect(x, y, Grid.CELL_SIZE, Grid.CELL_SIZE, false);
             }
             n = n.next;
@@ -231,9 +249,14 @@ public class Grid extends JPanel implements ActionListener{
         if (x == apple.getX() && y == apple.getY()) {
             score += 10;
             highScore = score > highScore ? score : highScore;
+            if (apple.getColor() == GREEN) {
+                snake.reverse(head);
+                justReversed = true;
+            }
             updateBody();
             createApple();
             timer.setDelay(timer.getDelay() - 2);
+            
         }
     }
 
@@ -250,11 +273,14 @@ public class Grid extends JPanel implements ActionListener{
         }
 
         // body collision
-        ArrayList<Node> x = snake.getBody();
-        for (Node node : x) {
-            if (headX == node.data.getFirst() && headY == node.data.getSecond()) {
-                repaintCanvas = false;
-                running = false;
+        if (!justReversed) {
+            justReversed = false;
+            ArrayList<Node> x = snake.getBody();
+            for (Node node : x) {
+                if (headX == node.data.getFirst() && headY == node.data.getSecond()) {
+                    repaintCanvas = false;
+                    running = false;
+                }
             }
         }
     }

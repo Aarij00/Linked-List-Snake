@@ -19,8 +19,8 @@ public class Stats extends JPanel implements ActionListener{
         this.setLayout(null);
         this.setLocation(0, 0);
         this.setPreferredSize(new Dimension(600, 100));
-        this.setBackground(new Color(10, 25, 46));
-        this.setBorder(BorderFactory.createLineBorder(new Color(101, 255, 220), 2));
+        this.setBackground(Grid.NAVY_BLUE);
+        this.setBorder(BorderFactory.createLineBorder(Grid.CYAN, 2));
         initialize();
     }
 
@@ -30,8 +30,8 @@ public class Stats extends JPanel implements ActionListener{
         resetBtn.setSize(new Dimension(150, 30));
         resetBtn.setUI(new MetalButtonUI());
         resetBtn.setOpaque(false);
-        resetBtn.setForeground(new Color(101, 255, 220));
-        resetBtn.setBorder(BorderFactory.createLineBorder(new Color(101, 255, 220)));
+        resetBtn.setForeground(Grid.CYAN);
+        resetBtn.setBorder(BorderFactory.createLineBorder(Grid.CYAN));
         resetBtn.setFocusable(false);
         resetBtn.addActionListener(this);
         this.add(resetBtn);
@@ -41,8 +41,8 @@ public class Stats extends JPanel implements ActionListener{
         toggleGridBtn.setSize(new Dimension(150, 30));
         toggleGridBtn.setUI(new MetalButtonUI());
         toggleGridBtn.setOpaque(false);
-        toggleGridBtn.setForeground(new Color(101, 255, 220));
-        toggleGridBtn.setBorder(BorderFactory.createLineBorder(new Color(101, 255, 220)));
+        toggleGridBtn.setForeground(Grid.CYAN);
+        toggleGridBtn.setBorder(BorderFactory.createLineBorder(Grid.CYAN));
         toggleGridBtn.setFocusable(false);
         toggleGridBtn.addActionListener(this);
         this.add(toggleGridBtn);
@@ -59,7 +59,7 @@ public class Stats extends JPanel implements ActionListener{
 
     public void draw(Graphics g) {
         g.setFont(new Font("Helvetica", Font.PLAIN, 20)); 
-        g.setColor(new Color(101, 255, 220));
+        g.setColor(Grid.CYAN);
         g.drawString(String.format("Score: %d", Grid.score), 240, 40);
         g.drawString(String.format("High Score: %d", Grid.highScore), 240, 80);
     }
