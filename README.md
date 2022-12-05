@@ -3,4 +3,6 @@ A Snake game that uses a Singly Linked List as the underlying data structure for
 
 To run:
 
+`git clone https://github.com/Aarij00/Linked-List-Snake.git`
 
+`javac *.java && java Driver`
