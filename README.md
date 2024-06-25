@@ -17,8 +17,7 @@ This project is a classic implementation of the Snake game with a unique twist: 
 
 1. Clone the repository:
 `
-git clone https://github.com/your-username/snake-game-linked-list.git
-cd snake-game-linked-list
+git clone https://github.com/Aarij00/Linked-List-Snake.git
 `
 
 2. Compile the project:
