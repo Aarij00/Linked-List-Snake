@@ -18,14 +18,15 @@ This project is a classic implementation of the Snake game with a unique twist: 
 1. Clone the repository:
 `
 git clone https://github.com/Aarij00/Linked-List-Snake.git
+cd Linked-List-Snake
 `
 
-2. Compile the project:
+3. Compile the project:
 `
 javac src/*.java
 `
 
-3. Run the game:
+4. Run the game:
 `
-java -cp src Main
+java -cp src Driver
 `
